@@ -11,7 +11,10 @@ using Xunit;
 namespace Web.Tests.OnboardingTests
 {
     //    [TestFixture]
-    //    [Category("InstantSauceTest"), Category("NUnit"), Category("Instant")]
+    [Trait("Category", "InstantSauceTest")]
+    [Trait("Category", "XUnit")]
+    [Trait("Category", "Instant")]
+    // [Category("InstantSauceTest"), Category("NUnit"), Category("Instant")]
     public class InstantSauceTest : IDisposable
     {
         private IWebDriver _driver;
@@ -24,8 +27,8 @@ namespace Web.Tests.OnboardingTests
             /*Easy Option For Sauce Authentication:
               * You can hardcode the values like this example below, but the best practice is to use environment variables
               */
-            var sauceUserName = "SAUCE_USERNAME";
-            var sauceAccessKey = "SAUCE_ACCESS_KEY";
+            var sauceUserName = "";
+            var sauceAccessKey = "";
 
             /*
               * In this section, we will configure our test to run on some specific
@@ -47,8 +50,7 @@ namespace Web.Tests.OnboardingTests
 
             //create a new Remote driver that will allow your test to send
             //commands to the Sauce Labs grid so that Sauce can execute your tests
-            _driver = new RemoteWebDriver(new Uri("http://ondemand.saucelabs.com:80"),
-              capabilities, TimeSpan.FromSeconds(600));
+            _driver = new RemoteWebDriver(new Uri("http://ondemand.saucelabs.com:80"), capabilities, TimeSpan.FromSeconds(600));
             //navigate to the url of the Sauce Labs Sample app
             _driver.Navigate().GoToUrl("https://www.saucedemo.com");
 
