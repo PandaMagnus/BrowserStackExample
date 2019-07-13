@@ -3,6 +3,7 @@ using IntelliTect.TestTools.Selenate;
 //using NUnit.Framework;
 //using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using Xunit;
@@ -20,6 +21,12 @@ namespace Web.Tests.OnboardingTests
         private IWebDriver _driver;
         private Browser _browser;
         private bool _testPassed = false;
+        private string browser = "Safari";
+        private string version = "11.1";
+        private string os = "macOS 10.13";
+        private string deviceName = "";
+        private string deviceOrientation = "";
+
         //[Test]
         [Fact]
         public void ShouldOpenOnSafari()
@@ -30,27 +37,20 @@ namespace Web.Tests.OnboardingTests
             var sauceUserName = "";
             var sauceAccessKey = "";
 
-            /*
-              * In this section, we will configure our test to run on some specific
-              * browser/os combination in Sauce Labs
-              */
-            var capabilities = new DesiredCapabilities();
-            //set your user name and access key to run tests in Sauce
-            capabilities.SetCapability("username", sauceUserName);
-            //set your sauce labs access key
-            capabilities.SetCapability("accessKey", sauceAccessKey);
-            //set browser to Safari
-            capabilities.SetCapability("browserName", "Safari");
-            //set operating system to macOS version 10.13
-            capabilities.SetCapability("platform", "macOS 10.13");
-            //set the browser version to 11.1
-            capabilities.SetCapability("version", "11.1");
-            //set your test case name so that it shows up in Sauce Labs
-            capabilities.SetCapability("name", "TEST");
+            DesiredCapabilities caps = new DesiredCapabilities();
+            caps.SetCapability(CapabilityType.BrowserName, browser);
+            caps.SetCapability(CapabilityType.Version, version);
+            caps.SetCapability(CapabilityType.Platform, os);
+            caps.SetCapability("deviceName", deviceName);
+            caps.SetCapability("deviceOrientation", deviceOrientation);
+            caps.SetCapability("username", sauceUserName);
+            caps.SetCapability("accessKey", sauceAccessKey);
+            caps.SetCapability("name", "Testing again!");
 
-            //create a new Remote driver that will allow your test to send
-            //commands to the Sauce Labs grid so that Sauce can execute your tests
-            _driver = new RemoteWebDriver(new Uri("http://ondemand.saucelabs.com:80"), capabilities, TimeSpan.FromSeconds(600));
+            _driver = new RemoteWebDriver(new Uri("http://ondemand.saucelabs.com:80/wd/hub"), 
+                caps,
+                TimeSpan.FromSeconds(600));
+            _browser = new Browser(_driver);
             //navigate to the url of the Sauce Labs Sample app
             _driver.Navigate().GoToUrl("https://www.saucedemo.com");
 
